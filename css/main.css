@@ -1,0 +1,34 @@
+textarea {
+    height: auto;
+}
+
+small.validation-error{
+    font-style: italic;
+    color: red;
+    margin: 10px;
+}
+
+input.validation-error {
+    box-shadow: 0 0 6px red !important;
+}
+
+#text-chunk {
+  font-size: 4rem;
+  color: white;
+}
+.controls {
+  height: 100px;
+
+}
+
+.wordwrap {
+  border: 0px;
+  background-color: black;
+    text-align: center;
+    font-size: 2.5em;
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+}

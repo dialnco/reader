@@ -1,0 +1,219 @@
+<!doctype html>
+<html class="no-js" lang="en" ng-app="readerApp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R3ad3r - by Dial</title>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/foundation-icons.css" />
+    <link rel="stylesheet" href="css/jquery.nouislider.css" />
+    <link rel="stylesheet" type="text/css" href="css/pullupmenu.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <script src="js/vendor/snap.svg-min.js"></script>
+    <script src="js/vendor/modernizr.js"></script>
+  </head>
+  <body ng-controller="ReaderCtrl">
+  <div class="home-screen" ng-show="navigation.showHomeScreen">
+    <div class="row">
+      <div class="large-12 columns large-text-center">
+        <br><br>
+        <h1 style="color:white">R3ad3r!</h1>
+        <br><br><br>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="large-12 columns">
+      	<div class="panel">
+	        <h3>Inserta tu texto aquí! </h3>
+
+	        <textarea id="textarea" rows="25" ng-model="textController.rawText"></textarea>
+
+            <div class="small-3 columns right">
+                <a href="#" class="medium success button right radius" ng-click="navigation.launchReaderScreen();">Empieza a leer</a>
+            </div>
+            <div class="small-3 columns right">
+                <a href="#" class="medium button right radius" ng-click="textController.resetTextToDefault();">Texto ejemplo</a>
+            </div>
+            <div class="clearfix"></div>
+      	</div>
+          <div style="color:white; text-align:right;"> By Diego Cortez</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="speed-reader-screen" ng-show="navigation.showReaderScreen">
+      <div class="row">
+          <div class="large-12 columns large-text-center">
+            <br>
+          </div>
+      </div>
+
+      <div class="row">
+          <div class="large-12 columns large-centered">
+              <div class="panel large-text-center wordwrap" id="wordwrap" style="min-height: 300px;">
+                  <br/><br><br>
+                  <span><h1 id="text-chunk"><br>{{textController.chunk}}</h1></span>
+                  <br><br><br>
+              </div>
+          </div>
+      </div>
+
+      <div class="clearfix"></div>
+      <div class="row">
+
+        <div class="small-12 small-centered columns" style="text-align:center;">
+
+              <div class="small-12 small-center  columns">
+                  <a id="playButton" href="#" class="small success radius button" ng-click="player.play();" ng-hide="player.playing"><i class="fi-play"></i> play</a>
+              </div>
+
+              <div class="small-12  columns">
+                  <a id="pauseButton" href="#" class="small success radius button" ng-click="player.pause();" ng-show="player.playing"><i class="fi-pause"></i> pausa</a>
+              </div>
+              <div class="clearfix"></div>
+
+              <div class="small-10 small-centered columns" style="vertical-align: middle">
+                  <div id="slider"></div>
+              </div>
+
+              <div class="row">
+                  <div class="large-12 columns large-text-center">
+                      <p>Leyendo <strong>{{textController.splitText.length}}</strong> palabras
+                          a <strong>{{textController.wordsPerMinute}}</strong>ppm
+                          divididas en pedazos de <strong>{{textController.wordsPerChunk}}</strong> palabras
+                      </p>
+                  </div>
+                </div>
+
+
+
+                <div class="small-4 columns">
+                    <a id="newButton" href="#" class="small radius button" ng-click="navigation.launchHomeScreen()"><i class="fi-page-add"></i> Texto</a>
+                </div>
+
+                <div class="small-4 columns">
+                    <a id="restartButton" href="#" class="small radius button" ng-click="player.restart();"><i class="fi-previous"></i> Restart</a>
+                </div>
+
+                <div class="small-4 columns">
+                    <a id="configButton" href="#" class="small radius button" data-reveal-id="configModal" ng-click="config.initConfigModal()"><i class="fi-wrench"></i> Ajustes</a>
+                </div>
+
+          </div>
+      </div>
+  </div>
+
+
+  <div id="configModal" class="reveal-modal" data-reveal>
+      <div class="large-text-center">
+          <h2>Ajustes</h2>
+          <p class="lead">Tweak the configurations for your speed reading</p>
+
+          <form id="configForm">
+              <div class="row">
+                  <div class="small-8" style="color:black">
+                      <div class="row">
+                          <div class="small-9 columns">
+                              <label for="wordsPerChunk" class="right inline"># de palabras por pedazo de texto</label>
+                          </div>
+                          <div class="small-3 columns left">
+                              <select id="wordsPerChunk" ng-class="{'validation-error': !config.validWordsPerChunk}"
+                                      ng-model="config.wordsPerChunk" ng-options="value for value in config.wordsPerChunkValues">
+                              </select>
+                              <small class="validation-error" ng-hide="config.validWordsPerChunk">This value must be a positive integer between 1 and 6</small>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="small-9 columns">
+                              <label for="wordsPerMinute" class="right inline">Palabras por minuto</label>
+                          </div>
+                          <div class="small-3 columns left">
+                              <input ng-class="{'validation-error': !config.validWordsPerMinute}" type="text" id="wordsPerMinute" ng-model="config.wordsPerMinute">
+                              <small class="validation-error" ng-hide="config.validWordsPerMinute"> This value must be a positive integer between 200 and 1000</small>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="large-12 columns large-text-center">
+                      <br/>
+                      <a href="#" class="medium success radius button" ng-click="config.saveConfiguration();"><i class="fi-check"></i> Guardar</a>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  <script src="js/vendor/classie.js"></script>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script src="js/foundation/foundation.slider.js"></script>
+  <script src="js/angular/angular.min.js"></script>
+  <script src="js/nouislider/jquery.nouislider.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    $(document).foundation();
+  </script>
+
+  <script>
+    (function() {
+
+      function SVGMenu( el, options ) {
+        this.el = el;
+        this.init();
+      }
+
+      SVGMenu.prototype.init = function() {
+        this.trigger = this.el.querySelector( 'button.menu__handle' );
+        this.shapeEl = this.el.querySelector( 'div.morph-shape' );
+
+        var s = Snap( this.shapeEl.querySelector( 'svg' ) );
+        this.pathEl = s.select( 'path' );
+        this.paths = {
+          reset : this.pathEl.attr( 'd' ),
+          open : this.shapeEl.getAttribute( 'data-morph-open' ),
+          close : this.shapeEl.getAttribute( 'data-morph-close' )
+        };
+
+        this.isOpen = false;
+
+        this.initEvents();
+      };
+
+      SVGMenu.prototype.initEvents = function() {
+        this.trigger.addEventListener( 'click', this.toggle.bind(this) );
+      };
+
+      SVGMenu.prototype.toggle = function() {
+        var self = this;
+
+        if( this.isOpen ) {
+          classie.remove( self.el, 'menu--anim' );
+          setTimeout( function() { classie.remove( self.el, 'menu--open' );	}, 250 );
+
+          this.pathEl.stop().animate( { 'path' : this.paths.close }, 350, mina.easeout, function() {
+            self.pathEl.stop().animate( { 'path' : self.paths.reset }, 700, mina.elastic );
+          } );
+        }
+        else {
+          classie.add( self.el, 'menu--anim' );
+          setTimeout( function() { classie.add( self.el, 'menu--open' );	}, 250 );
+
+          this.pathEl.stop().animate( { 'path' : this.paths.open }, 350, mina.backin, function() {
+            self.pathEl.stop().animate( { 'path' : self.paths.reset }, 700, mina.elastic );
+          } );
+        }
+        this.isOpen = !this.isOpen;
+      };
+
+      new SVGMenu( document.getElementById( 'menu' ) );
+
+    })();
+  </script>
+
+  </body>
+</html>
