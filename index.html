@@ -124,7 +124,7 @@
                               <select id="wordsPerChunk" ng-class="{'validation-error': !config.validWordsPerChunk}"
                                       ng-model="config.wordsPerChunk" ng-options="value for value in config.wordsPerChunkValues">
                               </select>
-                              <small class="validation-error" ng-hide="config.validWordsPerChunk">This value must be a positive integer between 1 and 6</small>
+                              <small class="validation-error" ng-hide="config.validWordsPerChunk"> Este valor debe ser in entero positivo entre 1 y 6</small>
                           </div>
                       </div>
                       <div class="row">
@@ -133,7 +133,7 @@
                           </div>
                           <div class="small-3 columns left">
                               <input ng-class="{'validation-error': !config.validWordsPerMinute}" type="text" id="wordsPerMinute" ng-model="config.wordsPerMinute">
-                              <small class="validation-error" ng-hide="config.validWordsPerMinute"> This value must be a positive integer between 200 and 1000</small>
+                              <small class="validation-error" ng-hide="config.validWordsPerMinute"> Este valor debe ser un valor positivo enterno entre 200 y 1000</small>
                           </div>
                       </div>
                   </div>
